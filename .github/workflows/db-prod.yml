@@ -1,0 +1,27 @@
+name: Migrate prod db
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Deploy
+        run: npm run migrate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_PRODUCTION}}
